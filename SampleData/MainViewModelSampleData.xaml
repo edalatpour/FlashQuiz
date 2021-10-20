@@ -1,0 +1,12 @@
+<local:MainViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:FlashQuiz" 
+
+    <local:MainViewModel.SearchSets>
+        <local:SetViewModel ID="1" Title="Football" Creator="John Madden"/>
+        <local:SetViewModel ID="2" Title="Basketball" Creator="Marv Alberts"/>
+        <local:SetViewModel ID="3" Title="Baseball" Creator="Billy Bean"/>
+    </local:MainViewModel.SearchSets>
+
+</local:MainViewModel>

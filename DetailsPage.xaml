@@ -1,0 +1,122 @@
+﻿<phone:PhoneApplicationPage xmlns:ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  xmlns:my="clr-namespace:FlashQuiz"  
+    x:Class="FlashQuiz.DetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignData SampleData/SetViewModelSampleData.xaml}"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="PivotHeaderDataTemplate">
+            <Grid Height="1" Width="1"/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PivotItemNoneDataTemplate">
+            <Grid Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Rectangle Fill="White" Opacity="1.0" RadiusX="30" RadiusY="30" />
+                <ScrollViewer Margin="25">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PivotItemFrontDataTemplate">
+            <Grid Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Rectangle Fill="White" Opacity="1.0" RadiusX="30" RadiusY="30" />
+                <ScrollViewer Margin="25">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <Image x:Name="photo" Source="{Binding Photo}" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock x:Name="definition" Text="{Binding Definition}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle2Style}" UseLayoutRounding="True" FontFamily="Segoe WP" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PivotItemBackDataTemplate">
+            <Grid Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Rectangle Fill="White" Opacity="1.0" RadiusX="30" RadiusY="30" />
+                <ScrollViewer Margin="25">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <TextBlock x:Name="termName" Text="{Binding Term}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle2Style}" UseLayoutRounding="True" TextDecorations="Underline" FontWeight="Bold" FontFamily="Segoe WP" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PivotItemBothDataTemplate">
+            <Grid Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Rectangle Fill="White" Opacity="1.0" RadiusX="30" RadiusY="30" />
+                <ScrollViewer Margin="25">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <TextBlock x:Name="termName" Text="{Binding Term}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle2Style}" UseLayoutRounding="True" TextDecorations="Underline" FontWeight="Bold" FontFamily="Segoe WP" />
+                        <Image x:Name="photo" Source="{Binding Photo}" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock x:Name="definition" Text="{Binding Definition}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle2Style}" UseLayoutRounding="True" FontFamily="Segoe WP" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+    
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneAccentBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ad:AdControl Grid.Row="0" Width="480" Height="80" ApplicationId="d994a05e-61d4-4dfc-8e15-f1a0af5a1696" AdUnitId="78572" />
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="1" Margin="12,17,0,12">
+            <TextBlock x:Name="ApplicationTitle" Text="Flash Quiz" Foreground="White" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Title}" Foreground="White" TextWrapping="Wrap" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+        </StackPanel>
+
+        <controls:Pivot
+            x:Name="MyPivot"
+            Grid.Row="2"
+            ItemsSource="{Binding Terms}"
+            SelectionChanged="Pivot_SelectionChanged"
+            HeaderTemplate="{StaticResource PivotHeaderDataTemplate}"
+            ItemTemplate="{StaticResource PivotItemNoneDataTemplate}">
+            <Style TargetType="controls:PivotItem">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <toolkit:GestureService.GestureListener>
+                <toolkit:GestureListener Tap="Pivot_Tap" />
+            </toolkit:GestureService.GestureListener>
+        </controls:Pivot>
+
+        <Grid Grid.Row="3" Margin="10">
+            <TextBlock x:Name="currentCardTextBlock" Foreground="White" HorizontalAlignment="Center" Text="" />
+        </Grid>
+
+    </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar x:Name="appBar" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton x:Name="previousButton" IconUri="/Images/appbar.back.rest.png" Text="prev card" Click="previousButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="showBothSidesButton"  IconUri="/Images/appbar.plus.rest.png" Text="both sides" Click="showBothSidesButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="flipButton" IconUri="/Images/appbar.refresh.rest.png" Text="flip card" Click="flipButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="nextButton" IconUri="/Images/appbar.next.rest.png" Text="next card" Click="nextButton_Click" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
